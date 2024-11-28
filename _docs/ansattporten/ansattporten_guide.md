@@ -53,7 +53,7 @@ Denne flyter er grundig dokumentert på denne siden:
 
 [innlogging med ID-porten](/docs/idporten/oidc/oidc_guide_idporten.html).
 
-[innlogging med ID-porten](../../idporten/oidc/oidc_guide_idporten.html).
+[innlogging med ID-porten](../../docs/idporten/oidc/oidc_guide_idporten.html).
 
 
 
