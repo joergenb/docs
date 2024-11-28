@@ -2,8 +2,8 @@
 title: Integrasjonsguide - Ansattporten
 description: Ansattporten er en kopi av ID-porten men der funksjonaliteten er tilpasset innlogging i ansatt/representasjonskontekst.
 
-sidebar: oidc
-product: ID-porten
+sidebar: ansattporten
+product: Ansattporten
 redirect_from: /ansattporten_guide
 ---
 

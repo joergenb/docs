@@ -1,0 +1,68 @@
+sidebarTitle: Ansattporten
+
+
+folders:
+- title: Om Ansattporten
+  folderitems:
+
+      - title: Hva er Ansattporten ?
+        jurl: /docs/ansattporten/about.html
+
+- title: Bruksområder
+  folderitems:
+
+      - title: Ansattporten Integrasjonsguide
+        jurl: /docs/ansattporten/ansattporten_guide.html
+
+      - title: Ansattporten - skyinnlogging
+        jurl: /docs/ansattporten/ansattporten_allmennsky.html
+
+
+- title: Grensesnitt og funksjonalitet
+  folderitems:
+
+      - title: "Generelt om protokollen"
+        jurl: /docs/ansattporten/ansattporten_protocol.html
+
+      - title: "/authorize"
+        jurl: /docs/ansattporten/ansattporten_protocol_authorize.html
+
+      - title: "RAR og autorative kilder"
+        jurl: /docs/ansattporten/ansattporten_rar.html
+
+      - title: Metadata
+        jurl: /docs/idporten/oidc/oidc_func_wellknown.html
+
+      - title: IP-adresser
+        jurl: /docs/general/IP.html
+
+- title: Testing
+  folderitems:
+
+  - title: Testbrukere
+    jurl: /docs/ansattporten/ansattporten_testbrukere.html
+
+- title: Administrasjon
+  folderitems:
+
+      - title: Administrasjon av Ansattporten
+        jurl: /docs/ansattporten/ansattporten_admin.html
+
+
+###########################
+
+related_resources_title: Andre nyttige lenker
+
+related_resources_list:
+
+- title: Github
+  jurl: https://github.com/digdir
+
+- title: Samarbeidsportalen
+  jurl: https://samarbeid.digdir.no
+
+- title: Status og driftsmeldinger
+  jurl: https://status.digdir.no/
+
+- title: Digitaliseringsdirektoratet
+  jurl: https://www.digdir.no
