@@ -27,7 +27,7 @@ Ulikt ID-porten så vil ikke brukeren få opprettet en felles SSO-sesjon i Ansat
 
 # Protokoll-flyt
 
-Teknisk er brukerreisen løst som en helt standard [OpenID Connect code flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth), som vist i sekvensdiagrammet nedenfor:
+Punkt-innlogging i Ansattporten har helt identisk flyt som for innlogging med ID-porten. 
 
 <div class="mermaid">
 sequenceDiagram
@@ -46,19 +46,18 @@ note over B,C: innlogget i tjenesten
 
 </div>
 
-For punkt-innlogging i Ansattporten er flyten identisk med ID-porten.  Denne er grundig dokumentert på denne siden: [innlogging med ID-porten](/idporten/oidc/oidc_auth_codeflow.html).
+Denne flyter er grundig dokumentert på denne siden: [innlogging med ID-porten](./idporten/oidc/oidc_auth_codeflow.html).
 
-For endepunkter til Ansattporten, se [ansattporten_metadata.html]
-
-Merk at Ansattporten ikke tilbyr noe userinfo-endepunkt.
+Men du må selvsagt bruke Ansattporten sine endepunkter, som du finner på her: [ansattporten_metadata.html].  Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
 
 # Test
 
-Man kan teste løsningen uten å lage en integrasjon ved å bruke vår demo-tjeneste [https://demo-client.test.ansattporten.no/](https://demo-client.test.ansattporten.no/).  Her kan man også studere protokoll-flyten i detalj.   Dersom man ønsker å teste organisasjonsvelger, så kan man bruke `[{"type":"ansattporten:altinn:service","resource": "urn:altinn:resource:2480:40"}]` i authorization_details-feltet (denne tjenestekoden gir ut nøkkelroller).
+Man kan teste løsningen uten å lage en integrasjon ved å bruke vår demo-tjeneste [https://demo-client.test.ansattporten.no/](https://demo-client.test.ansattporten.no/).  Her kan man også studere protokoll-flyten i detalj.  
+
+> Ved å bruke **TestID** som innloggingsmetode slipper man å kontakte Digdir for å få opprettet og resatt testbrukere.  TestID har også integrasjon mot Tenor, så du enkelt kan hente tilfeldige test-personer.
 
 Vi anbefaler å bruke [Tenor testdata-søk](https://www.skatteetaten.no/skjema/testdata/) til å finne test-brukere. Tenor har mulighet til å filtrere slik at man får bare **daglig leder** fra test-Enhetsregisteret. En annen fordel med Tenor er at det kun er syntetiske testdata her, så man slipper å risikere å blande produksjons- og test-data.
 
-> Ved å bruke **TestID** som innloggingsmetode slipper man å kontakte Digdir for å få opprettet og resatt testbrukere.  TestID har også integrasjon mot Tenor, så du enkelt kan hente tilfeldige test-personer.
 
 
 # Isolert SSO
