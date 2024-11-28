@@ -42,11 +42,11 @@ note over B,C: innlogget i tjenesten
 
 </div>
 
-Ulikt ID-porten så vil ikke brukeren få opprettet en felles SSO-sesjon i Ansattporten.  Dersom brukeren forsøker å logge på en annen tjeneste rett etterpå, med samme browser, så må brukeren autentisere seg på nytt.  Men dersom brukeren forsøker å logge på samme tjeneste på nytt, så vil vil hen bli logga inn automatisk.  Dette kan utnyttes til f.eks å la sluttbruker enkelt bytte organisasjon hen vil representere uten å måtte re-autentisere hver gang. 
+Ulikt ID-porten så vil ikke brukeren få opprettet en felles SSO-sesjon i Ansattporten.  Dersom brukeren forsøker å logge på en annen tjeneste rett etterpå, med samme browser, så må brukeren autentisere seg på nytt.  Men dersom brukeren forsøker å logge på samme tjeneste på nytt, så vil vil hen bli logga inn automatisk. 
 
-Denne SSO-oppførselen er realisert vha funksjonaliteten [isolert SSO-sesjon](oidc_func_nosso.html), der Ansattporten overstyrer flagget `sso_disabled` til true uavhengig av hva kunden selv har satt i selvbetjening.   Merk at dette også  betyr at Ansattporten ikke tilbyr individuelle sesjonslevetider per tjeneste, men isteden så deler alle tjenestene en felles underliggende http-sesjonscookie der max-levetid på 120 min starter ved innlogging til første tjeneste, og inaktivitetstimer på 30 min gjelder for unionen av de innloggede tjenestene. 
+Denne SSO-oppførselen er realisert vha funksjonaliteten [isolert SSO-sesjon](oidc_func_nosso.html), der Ansattporten overstyrer flagget `sso_disabled` til true uavhengig av hva kunden selv har satt i selvbetjening.   Merk at dette også betyr at Ansattporten ikke tilbyr individuelle sesjonslevetider per tjeneste, men isteden så deler alle tjenestene en felles underliggende http-sesjonscookie der max-levetid på 120 min starter ved innlogging til første tjeneste, og inaktivitetstimer på 30 min gjelder for unionen av de innloggede tjenestene. 
 
-Dette betyr også at kunder må støtte utlogging både fra egen tjeneste, men også håndtere utloggingsforespørsler (front_channel_logout) fra Ansattporten initiert av en annen tjeneste.
+Dette betyr også at kunder må støtte utlogging både fra egen tjeneste, men også kunne håndtere utloggingsforespørsler (front_channel_logout) fra Ansattporten initiert av en annen tjeneste.
 
 
 ### Brukerreise 2: Innlogging på vegne av virksomhet

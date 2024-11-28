@@ -27,7 +27,7 @@ Ulikt ID-porten så vil ikke brukeren få opprettet en felles SSO-sesjon i Ansat
 
 # Protokoll-flyt
 
-Punkt-innlogging i Ansattporten har helt identisk flyt som for innlogging med ID-porten. 
+Punkt-innlogging i Ansattporten har helt identisk flyt som for innlogging med ID-porten:
 
 <div class="mermaid">
 sequenceDiagram
@@ -46,7 +46,17 @@ note over B,C: innlogget i tjenesten
 
 </div>
 
-Denne flyter er grundig dokumentert på denne siden: [innlogging med ID-porten](./idporten/oidc/oidc_auth_codeflow.html).
+Denne flyter er grundig dokumentert på denne siden: 
+[innlogging med ID-porten](./idporten/oidc/oidc_auth_codeflow.html).
+
+[innlogging med ID-porten](/idporten/oidc/oidc_auth_codeflow.html).
+
+[innlogging med ID-porten](/docs/idporten/oidc/oidc_auth_codeflow.html).
+
+[innlogging med ID-porten](../../idporten/oidc/oidc_auth_codeflow.html).
+
+
+
 
 Men du må selvsagt bruke Ansattporten sine endepunkter, som du finner på her: [ansattporten_metadata.html].  Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
 
