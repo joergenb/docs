@@ -47,13 +47,13 @@ note over B,C: innlogget i tjenesten
 </div>
 
 Denne flyter er grundig dokumentert på denne siden: 
-[innlogging med ID-porten](./idporten/oidc/oidc_auth_codeflow.html).
+[innlogging med ID-porten](./idporten/oidc/oidc_guide_idporten.html).
 
-[innlogging med ID-porten](/idporten/oidc/oidc_auth_codeflow.html).
+[innlogging med ID-porten](/idporten/oidc/oidc_guide_idporten.html).
 
-[innlogging med ID-porten](/docs/idporten/oidc/oidc_auth_codeflow.html).
+[innlogging med ID-porten](/docs/idporten/oidc/oidc_guide_idporten.html).
 
-[innlogging med ID-porten](../../idporten/oidc/oidc_auth_codeflow.html).
+[innlogging med ID-porten](../../idporten/oidc/oidc_guide_idporten.html).
 
 
 
