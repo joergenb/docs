@@ -1,7 +1,6 @@
 ---
 title: Ansattporten selvbetjening
 description: Ansattporten selvbetjenes på Samarbeidsportalen
-summary: "Ansattporten selvbetjenes på Samarbeidspotalen"
 
 sidebar: ansattporten
 product: Ansattporten
