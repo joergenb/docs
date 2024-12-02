@@ -42,9 +42,9 @@ participant A as Ansattporten
 participant S as Autorativ kilde
 
 B->>C: Klikker "login" på tjeneste
-C-->>A: /authorize med representasjonstype (redirect)
+C-->>A: /authorize med <br/>representasjonstype (redirect)
 note over A: sluttbruker autentiserer seg
-A->>+S: Har sluttbruker forespurt representasjonstype(r) ?
+A->>+S: Har sluttbruker <br/>forespurt representasjonstype(r) ?
 S->>-A: Liste med virksomheter
 note over A: sluttbruker velger en virksomhet
 A-->>C: redirect med code
