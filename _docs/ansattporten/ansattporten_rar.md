@@ -89,12 +89,13 @@ Datamodellen for respons inneholder de samme claimene som i request, men i tille
     "resource" : "urn:altinn:resource:2480:40",
     "type" : "ansattporten:altinn:service",
     "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
-    "reportees" : [ {
-      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
-      "Authority" : "iso6523-actorid-upis",
-      "ID" : "0192:987464291",
-      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
-    } ]
+    "reportees" : [ 
+      {
+        "Authority" : "iso6523-actorid-upis",
+        "ID" : "0192:987464291",
+        "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
+        "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
+      } ]
   } ]
 ```
 

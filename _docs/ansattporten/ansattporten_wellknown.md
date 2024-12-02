@@ -1,7 +1,6 @@
 ---
 title: well-known
 description: Ansattporten sitt well-known endepunkt
-summary: "Metadata om Ansattporten er tilgjengelig på vårt .well-known-endepunkt"
 
 sidebar: ansattporten
 product: Ansattporten
