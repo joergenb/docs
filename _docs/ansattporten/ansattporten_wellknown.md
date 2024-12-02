@@ -12,7 +12,7 @@ redirect_from: /ansattporten_wellknown
 
 Metadata om Ansattporten er tilgjengelig på vårt .well-known-endepunkt ihht. [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig).  
 
-På endepunktet finner du lenke til vårt JWK-endepunkt, der Ansattporten sitt  signeringssertifikat publiseres.  Vi anbefaler kunder sterkt om å bruke endepunktet til dynamisk egen-konfigurasjon for å sikre kontinuerlig tjeneste-leveranse når ID-porten bytter signeringssertifikat.
+På endepunktet finner du lenke til vårt JWK-endepunkt, der Ansattporten sitt  signeringssertifikat publiseres.  Vi anbefaler kunder sterkt om å bruke endepunktet til dynamisk egen-konfigurasjon for å sikre kontinuerlig tjeneste-leveranse når Ansattporten bytter signeringssertifikat.
 
 
 |Miljø| IssuerMetadata |
