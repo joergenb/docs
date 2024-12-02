@@ -27,6 +27,9 @@ Ved representasjon er brukerreisen følgende:
 
 I steg 3. viser Ansattporten en organisasjonsvelger etter autentisering, der sluttbruker må velge hvilke(n) organisasjon hen vil representere:
 
+![organsisasjonsvelger](/images/idporten/oidc/ansattporten_orgvelger2.png)
+
+
 ![organsisasjonsvelger](/images/idporten/oidc/ansattporten_orgvelger2.png | width=100)
 
 # Protokoll-flyt
