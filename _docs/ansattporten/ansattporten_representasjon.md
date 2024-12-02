@@ -79,10 +79,8 @@ Når brukeren blir redirecta tilbakt til klient, [henter klienten tokens på van
 
 Klienten finner opplysninger om valgt representasjonsforhold i claimet `authorization_details`. Claimet er både returnert direkte som del av selve token-responsen, men er også inkludert i selve id_tokenet, for fleksibiltet.
 
-Klient
 
-
-Eksempel på token-response:
+*Eksempel på token-response:*
 ```
 200 OK
 
@@ -112,7 +110,7 @@ Eksempel på token-response:
 }
 ```
 
-Eksempel på id_token med representasjons-informasjon: 
+*Eksempel på id_token med representasjons-informasjon: *
 ```
 {
   "sub" : "z9RuQiLefXmJOBnywa_c75YQMH05nDsHjw0RFzuJC8M",

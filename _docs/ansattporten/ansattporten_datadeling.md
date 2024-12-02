@@ -7,7 +7,7 @@ product: Ansattporten
 redirect_from: /ansattporten_datadeling
 ---
 
-Bruksområdet for innlogging på vegne av virksomhet til nett-tjeneste kan også enkelt utnyttes til å støtte representasjon i datadeling / mot APIer.  Tjenesten som brukeren har logget inn til, vil kunne utveksle data på vegne av valgt organisasjon mot et API hos en API-tilbyder. 
+Bruksområdet for innlogging på vegne av virksomhet til nett-tjeneste kan også enkelt utnyttes til å støtte representasjon også i datadeling / mot APIer.  Tjenesten som brukeren har logget inn til, vil kunne utveksle data på vegne av valgt organisasjon mot et API hos en API-tilbyder. 
 
 Du finner mer overordnet informasjon om Ansattporten ved å klikke [her](ansattporten_om.html)
 
@@ -46,7 +46,7 @@ participant T as API
 B->>C: Klikker "login" på tjeneste
 C-->>A: /authorize med representasjonstype (redirect)
 note over A: sluttbruker autentiserer seg
-A->>+S: Har sluttbruker denne representasjonstypen ?
+A->>+S: Har sluttbruker <br/>denne representasjonstypen ?
 S->>-A: Liste med virksomheter
 note over A: sluttbruker velger en virksomhet
 A-->>C: redirect med code
