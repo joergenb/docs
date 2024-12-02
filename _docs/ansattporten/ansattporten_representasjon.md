@@ -1,98 +1,37 @@
 ---
-title: Integrasjonsguide for Ansattporten
-description: Ansattporten er en kopi av ID-porten men der funksjonaliteten er tilpasset innlogging i ansatt/representasjonskontekst.
+title: Representasjon i Ansattporten
+description: Ansattporten lar brukere logge inn på vegne av en virksomhet
 
 sidebar: ansattporten
 product: Ansattporten
-redirect_from: /ansattporten_guide
+redirect_from: /ansattporten_representasjon
 ---
 
-Ansattporten er en egen innloggingtjeneste med funksjonalitet som skiller seg noe fra ID-porten, slik at den skal være mer hensiktmessig å bruke i ansattkontekst eller i andre situasjoner der det er ønskelig å opptre i et representasjonsforhold på vegne av andre virksomheter eller personer.
-
-Du finner mer overordned informasjon om Ansattporten ved å klikke [her](ansattporten_om.html)
-
-# Beskrivelse av bruksscenarioet
-
-På denne siden beskriver vi hvordan du setter opp en tjeneste som bruker Ansattporten til punkt-autentisering.   Dersom du heller vil lese om hvordan tjenesten din kan kreve innlogging på vegne av en virksomhet, må du klikke [her](ansattporten_representasjon.html). 
-
-# Brukerreise
-
-Punkt-autentisering er den enkleste brukerreisen.  I dette scenariet utfører brukeren en innlogging til en tjeneste, og får etablert en isolert SSO-sesjon kun til denne tjenesten:
-
-1. Bruker klikker login-knapp hos tjeneste.  
-2. Bruker autentiserer seg med eID gjennom Ansattporten.
-4. Bruker blir sendt tilbake til tjenesten.
-
-Teknisk er dette løst som en helt standard [OpenID Connect code flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth), som vist i sekvensdiagrammet nedenfor:
-
-<div class="mermaid">
-sequenceDiagram
-
-participant B as Bruker
-participant C as Tjeneste
-participant A as Ansattporten
-
-B->>C: Klikker "login" på tjeneste
-C->>A: /authorize (redirect)
-note over B, A: sluttbruker autentiserer seg
-A->>C: redirect med code
-C->>A: /token
-A->>C: id_token
-note over B,C: innlogget i tjenesten
-
-</div>
-
-Ulikt ID-porten så vil ikke brukeren få opprettet en felles SSO-sesjon i Ansattporten.  Dersom brukeren forsøker å logge på en annen tjeneste rett etterpå, med samme browser, så må brukeren autentisere seg på nytt.  Men dersom brukeren forsøker å logge på samme tjeneste på nytt, så vil vil hen bli logga inn automatisk. 
-
-Denne SSO-oppførselen er realisert vha funksjonaliteten [isolert SSO-sesjon](oidc_func_nosso.html), der Ansattporten overstyrer flagget `sso_disabled` til true uavhengig av hva kunden selv har satt i selvbetjening.   Merk at dette også betyr at Ansattporten ikke tilbyr individuelle sesjonslevetider per tjeneste, men isteden så deler alle tjenestene en felles underliggende http-sesjonscookie der max-levetid på 120 min starter ved innlogging til første tjeneste, og inaktivitetstimer på 30 min gjelder for unionen av de innloggede tjenestene. 
-
-Dette betyr også at kunder må støtte utlogging både fra egen tjeneste, men også kunne håndtere utloggingsforespørsler (front_channel_logout) fra Ansattporten initiert av en annen tjeneste.
-
-
-### Brukerreise 2: Innlogging på vegne av virksomhet
 
 Ansattporten tilbyr *beriket* autentisering, altså at informasjon om innlogget bruker blir beriket med et representasjonsforhold/autorisasjonsinformasjon fra en ekstern autorativ kilde.  I første versjon av løsningen er det Altinn Autorisasjon som tilbys som autorativ kilde.
 
-En tjeneste aktiverer støtte for beriket autentisering ved å inkludere informasjon om ønsket representasjonsforhold (="avgiver") i autentiseringforespørselen.  Ansattporten vil da vise en organisasjonsvelger etter autentisering, der sluttbruker må velge hvilke(n) organisasjon hen vil representere:
+Du finner mer overordnet informasjon om Ansattporten ved å klikke [her](ansattporten_om.html)
 
-![organsisasjonsvelger](/images/idporten/oidc/ansattporten_orgvelger2.png)
+# Beskrivelse av bruksscenarioet
 
-Brukerreise blir da som følger:
+På denne siden beskriver vi hvordan en tjeneste kan la brukerene velge hvilken virksomhet de ønsker å representere.  Dette scenariet bygger videre på [vanlig punktautentisering](ansattporten_guide.html). 
 
-1. Bruker klikker login-knapp hos tjeneste.  Kallet til ansattporten inneholder informasjon om hvilket representasjonsforhold som tjenesten trenger
-2. Bruker autentiserer seg med sterk eID.  Det opprettes en isolert SSO-sesjon i Ansattporten.
-3. Dersom bruker har en eller flere representasjonsforhold av de forespurte typene, vil Ansattporten vise en organisasjonsvelger, der hen kan velge hvilken organisasjon (avgiver) som denne innloggingen skal være på vegne av
-4. Bruker blir sendt tilbake til tjenesten, med informasjon om valgt organisasjon i id_tokenet
+# Brukerreise
 
-Dette er detaljert i sekvensdiagrammet under:
+Ved representasjon er brukerreisen følgende:
 
+1. Bruker klikker login-knapp hos tjeneste. Tjenesten ber om en type representasjon.
+2. Bruker autentiserer seg med eID gjennom Ansattporten.
+3. Bruker velger hvilken virksomhet hen vil representere.
+4. Bruker blir sendt tilbake til tjenesten.
 
-<div class="mermaid">
-sequenceDiagram
+I steg 3. viser Ansattporten en organisasjonsvelger etter autentisering, der sluttbruker må velge hvilke(n) organisasjon hen vil representere:
 
-participant B as Bruker
-participant C as Tjeneste
-participant A as Ansattporten
-participant AA as Altinn Autorisasjon
+![organsisasjonsvelger](/images/idporten/oidc/ansattporten_orgvelger2.png | width=100)
 
-B->>C: Klikker "login" på tjeneste
-C->>A: /authorize inkl forespurte representasjonstyper  (redirect)
-note over B, A: sluttbruker autentiserer seg
-  A->>AA: hente avgivere for bruker for ønska representasjon
-  A->>A: vise organisasjonsvelger
-  note over B, A: Bruker velger en  organisasjon
-A->>C: redirect med code
-C->>A: /token  (id_token)
-note over B,C: innlogget i tjenesten
+# Protokoll-flyt
 
-</div>
-
-
-**endring Q1-2024:** Dersom brukeren mangler det forespurte representasjonsforholdet, så vil brukeren likevel bli logga inn, men det vil ikke inkluderes noen representasjons-informasjon.
-
-### Brukerreise 3:  datadeling på vegne av virksomhet
-
-Denne brukerreisen er nært beslektet med #2, men med et ekstra steg: Tjenesten som brukeren har logget inn til, vil i tilegg utveksle data på vegne av valgt organisasjon mot et API hos en 3dje-part.  
+Representasjonspålogging er en [vanlig autorisasjons-kodeflyt ihht Oauth2/OIDC](ansattporten_guide.html) der tjenesten i autorisasjonsforespørselen inkluderer et tillegg som forespør hvilken type representasjonsforhold som brukeren må inneha hos den autorative kilden.
 
 <div class="mermaid">
 sequenceDiagram
@@ -100,31 +39,139 @@ sequenceDiagram
 participant B as Bruker
 participant C as Tjeneste
 participant A as Ansattporten
-participant AA as Altinn Autorisasjon
-participant D as API
+participant S as Autorativ kilde
 
 B->>C: Klikker "login" på tjeneste
-C->>A: /authorize inkl forespurte representasjonstyper  (redirect)
-note over B, A: sluttbruker autentiserer seg
-  A->>AA: hente avgivere for bruker for ønska representasjon
-  A->>A: vise organisasjonsvelger
-  note over B, A: Bruker velger en  organisasjon
+C->>A: /authorize med representasjonstype (redirect)
+note over A: sluttbruker autentiserer seg
+A->>+S: Har sluttbruker forespurt representasjonstype(r) ?
+S->>-A: Liste med virksomheter
+note over A: sluttbruker velger en virksomhet
 A->>C: redirect med code
-C->>A: /token  
-note over B,C: innlogget i tjenesten
-C->>D: API-kall (access_token)
-D->>C: data
+C->>A: /token
+A->>C: id_token
+note over B,C: innlogget på vegne av valgt virksomhet
 
 </div>
 
-API-tilbydere bør merke seg at den organisasjonen som brukeren velger i organisasjonsvelgeren ikke trenger å samsvare med den organisasjonen som eier tjenesten.  
+Ansattporten bruker standarden [Rich Authorization Requests (RAR)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar) til å strukturere informasjon om representasjonsforhold, både i forespørsler og tokens.  En oversikt over [støtta RAR-typer i Ansattporten finner du her](ansattporten_rar.html)
 
-> Eksempel: Ola logger inn på vegne av Oslo Kommune til en tjeneste fra Visma som konsumerer et API hos Skatteetaten.
+Klienten må inkludere claimet `authorization_details` i autorisasjonsforespøreselen for å trigge representasjonspålogging.  Et eksempel er vist her:
+
+```
+https://login.test.ansattporten.no/authorize?
+  scope=openid&
+  client_id=9a99e96d-b56c-4f74-a689-f936f71c8819&
+... 
+  authorization_details= [
+    {
+      "type": "ansattporten:altinn:service",
+      "resource": "urn:altinn:resource:2480:40"
+    }
+  ]
+```
+(merk at eksempelet er forenklet)
+
+`authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` forteller hvilken autorativ kilde som tjenesten ønsker å benytte. Ulike `type` vil ha egne datamodeller for hvilke andre claims som inngår i request og respons.  Datamodellene er beskrevet lenger nede.
 
 
-Teknisk sett benytter tjenesten (oauth2-klienten) Ansattporten sine access_token for å få denne API-tilgangen. 
+Når brukeren blir redirecta tilbakt til klient, henter klienten tokens på vanlig måte. 
 
-## Metadata
+I token-responsen mottar klienten opplysninger om valgt representasjonsforhold i claimet `authorization_details`. Claimet er både returnert som del av selve token-responsen, men er også inkludert i id_tokenet, for fleksibiltet.
+
+Eksempel på token-response:
+```
+{
+  "id_token"      : "eyJraWQiO...",
+  "access_token"  : "eyJraWQiO..."
+  "refresh_token" : "eyJlbmMiO...",
+  "scope" : "openid profile",
+
+  "authorization_details" : [ {
+    "resource" : "urn:altinn:resource:2480:40",
+    "type" : "ansattporten:altinn:service",
+    "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
+    "reportees" : [ {
+      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
+      "Authority" : "iso6523-actorid-upis",
+      "ID" : "0192:987464291",
+      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
+    } ]
+  } ],
+
+  "refresh_token_expires_in" : 7200,
+  "token_type" : "Bearer",
+  "expires_in" : 600
+}
+```
+
+
+Forenklet eksempel på id_token ved representasjonspålogging:
+```
+{
+  "sub" : "z9RuQiLefXmJOBnywa_c75YQMH05nDsHjw0RFzuJC8M",
+  "amr" : [ "TestID" ],
+  "iss" : "https://test.ansattporten.no",
+  "pid" : "45840375084",
+...
+  "authorization_details" : [ {
+    "resource" : "urn:altinn:resource:2480:40",
+    "type" : "ansattporten:altinn:service",
+    "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
+    "reportees" : [ {
+      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
+      "Authority" : "iso6523-actorid-upis",
+      "ID" : "0192:987464291",
+      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
+    } ]
+  } ]
+}
+
+```
+
+Merk at bruken av `authorization_details` inne i et id_token ikke er beskrevet i RAR-spesifikasjonen. Klienten skal fortrinnsvis bruke token-responsen til å utlede hvilke rettigheter sluttbruker gav til klienten. Vi har valgt å inkludere det for enkelhets skyld.
+
+
+
+
+# Datamodell for Altinn Autorisasjon
+
+Ansattporten definerer 
+
+
+
+
+
+en entydig idenfikator for er altså et array som potensielt kan inneholde flere ønska representasjonsforhold.   For hvert element i arrayet, 
+
+
+
+`authorization_details` er altså et array som potensielt kan inneholde flere ønska representasjonsforhold. Da vil organisasjonsvelger vise unionen av alle virksomheter som brukeren har ett eller flere av de forespurte representasjonsforholdene for.  Tokenet vil innehold en liste med de faktiske representasjonsforholdene brukere har for valgt(e) organisasjon(er).
+
+
+
+
+
+
+
+
+
+
+ Dette er nærmere forklart under *protokollflyt* nedenfor.
+
+Følgende `authorization_type` er støttet i Ansattporten:
+
+| `authorization_type` | Skildring |
+|-|-|
+|ansattporten:altinn:service| Bruker lenketjenester (ServiceCode) fra Altinn 2 som autorativ kilde for representasjonsforhold |
+
+Det er mulig å be om flere representasjonsforhold i samme påloggingsforespørsel.  
+
+
+
+
+
+
 
 Følgende miljøer er tilgjengelige for kunder:
 
@@ -144,19 +191,6 @@ Vi anbefaler å bruke [Tenor testdata-søk](https://www.skatteetaten.no/skjema/t
 > Ved å bruke **TestID** som innloggingsmetode slipper man å kontakte Digdir for å få opprettet og resatt testbrukere.  TestID har også integrasjon mot Tenor, så du kan hente tilfeldige test-personer derifra.
 
 **MERK:** Dersom testbrukeren ikke finnes fra før i Altinn sitt testmiljø (typisk for syntetiske fødselsnummer), vil ikke organisasjonsvelger fungere. Dette løses enkelt ved å logge inn i TT02 en gang.
-
-
-## Representasjonsforhold og RAR
-
-Ansattporten bruker [Rich Authorization Requests (RAR)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar) til å strukturere informasjon om representasjonsforhold, både i forespørsler og tokens.  Dette er nærmere forklart under *protokollflyt* nedenfor.
-
-Følgende `authorization_type` er støttet i Ansattporten:
-
-| `authorization_type` | Skildring |
-|-|-|
-|ansattporten:altinn:service| Bruker lenketjenester (ServiceCode) fra Altinn 2 som autorativ kilde for representasjonsforhold |
-
-Det er mulig å be om flere representasjonsforhold i samme påloggingsforespørsel.  Da vil organisasjonsvelger vise unionen av alle organisasjoner som brukeren har ett eller flere av de forespurte representasjonsforholdene for.  Tokenet vil innehold en liste med de faktiske representasjonsforholdene brukere har for valgt(e) organisasjon(er).
 
 #### Datamodell for `ansattporten:altinn:service`
 
@@ -395,3 +429,15 @@ RAR er en ny Oauth2-utvidelse for transaksjonsspesifikke autorisasjoner.  Der "b
 - eigendefinerte felt,
   - til ein gitt `type` vil det normalt vere definert og dokumentert ein tilhøyrande gyldig datamodell
 
+
+
+
+
+
+# Test
+
+Man kan teste løsningen uten å lage en integrasjon ved å bruke vår demo-tjeneste [https://demo-client.test.ansattporten.no/](https://demo-client.test.ansattporten.no/).  Her kan man også studere protokoll-flyten i detalj.  
+
+> Ved å bruke **TestID** som innloggingsmetode slipper man å kontakte Digdir for å få opprettet og resatt testbrukere.  TestID har også integrasjon mot Tenor, så du enkelt kan hente tilfeldige test-personer.
+
+Vi anbefaler å bruke [Tenor testdata-søk](https://www.skatteetaten.no/skjema/testdata/) til å finne test-brukere. Tenor har mulighet til å filtrere slik at man får bare **daglig leder** fra test-Enhetsregisteret. En annen fordel med Tenor er at det kun er syntetiske testdata her, så man slipper å risikere å blande produksjons- og test-data.

@@ -11,8 +11,15 @@ folders:
 - title: Bruksområder
   folderitems:
 
-      - title: Ansattporten Integrasjonsguide
+      - title: Innlogging i Ansattporten
         jurl: /docs/ansattporten/ansattporten_guide.html
+
+      - title: Innlogging på vegne av virksomhet
+        jurl: /docs/ansattporten/ansattporten_representasjon.html
+
+      - title: Datadeling på vegne av virksomhet
+        jurl: /docs/ansattporten/ansattporten_datadeling.html
+
 
       - title: Ansattporten - skyinnlogging
         jurl: /docs/ansattporten/ansattporten_allmennsky.html

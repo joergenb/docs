@@ -46,37 +46,23 @@ note over B,C: innlogget i tjenesten
 
 </div>
 
-Denne flyter er grundig dokumentert på denne siden: 
-[innlogging med ID-porten](./idporten/oidc/oidc_guide_idporten.html).
-
-[innlogging med ID-porten](/idporten/oidc/oidc_guide_idporten.html).
-
-[innlogging med ID-porten](/docs/idporten/oidc/oidc_guide_idporten.html).
+Denne flyten er grundig dokumentert på denne siden: 
 
 [innlogging med ID-porten](../../docs/idporten/oidc/oidc_guide_idporten.html).
 
 
 
 
-Men du må selvsagt bruke Ansattporten sine endepunkter, som du finner på her: [ansattporten_metadata.html].  Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
-
-# Test
-
-Man kan teste løsningen uten å lage en integrasjon ved å bruke vår demo-tjeneste [https://demo-client.test.ansattporten.no/](https://demo-client.test.ansattporten.no/).  Her kan man også studere protokoll-flyten i detalj.  
-
-> Ved å bruke **TestID** som innloggingsmetode slipper man å kontakte Digdir for å få opprettet og resatt testbrukere.  TestID har også integrasjon mot Tenor, så du enkelt kan hente tilfeldige test-personer.
-
-Vi anbefaler å bruke [Tenor testdata-søk](https://www.skatteetaten.no/skjema/testdata/) til å finne test-brukere. Tenor har mulighet til å filtrere slik at man får bare **daglig leder** fra test-Enhetsregisteret. En annen fordel med Tenor er at det kun er syntetiske testdata her, så man slipper å risikere å blande produksjons- og test-data.
-
+Men du må selvsagt bruke Ansattporten sine endepunkter, som du finner [her]( [ansattporten_metadata.html]).  Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
 
 
 # Isolert SSO
 
-SSO-oppførselen i Ansattporten er realisert vha funksjonaliteten [isolert SSO-sesjon](oidc_func_nosso.html), der Ansattporten overstyrer flagget `sso_disabled` til true uavhengig av hva kunden selv har satt i selvbetjening.   Merk at dette også  betyr at Ansattporten ikke tilbyr individuelle sesjonslevetider per tjeneste, men isteden så deler alle tjenestene en felles underliggende http-sesjonscookie der max-levetid på 120 min starter ved innlogging til første tjeneste, og inaktivitetstimer på 30 min gjelder for unionen av de innloggede tjenestene. 
+SSO-oppførselen i Ansattporten er realisert vha funksjonaliteten [isolert SSO-sesjon](../../docs/idporten/oidc/oidc_func_nosso.html), der Ansattporten overstyrer flagget `sso_disabled` til true uavhengig av hva kunden selv har satt i selvbetjening.   Merk at dette også  betyr at Ansattporten ikke tilbyr individuelle sesjonslevetider per tjeneste, men isteden så deler alle tjenestene en felles underliggende http-sesjonscookie der max-levetid på 120 min starter ved innlogging til første tjeneste, og inaktivitetstimer på 30 min gjelder for unionen av de innloggede tjenestene. 
 
 Dette betyr også at kunder må støtte utlogging både fra egen tjeneste, men også håndtere utloggingsforespørsler (front_channel_logout) fra Ansattporten initiert av en annen tjeneste.
 
 
 # Utlogging
 
-Siden Ansattporten er basert på [isolerte SSO-sesjoner](oidc_func_nosso.html), så må tjenesten kunne håndtere [utlogging på samme måten som ID-porten](oidc_protocol_logout.html).  Dvs. både tilby brukeren å kunne logge ut, samt å måtte håndtere utloggingsforsepørsler initiert fra andre tjenester i Ansattporten.
+Selv om Ansattporten ikke har SSO på tvers av tjenester, bør likevel tjenesten din kunne håndtere [utlogging på samme måten som ID-porten](../../docs/idporten/oidc/oidc_protocol_logout.html).  Dvs. både tilby brukeren å kunne logge ut, samt å måtte håndtere utloggingsforsepørsler  initiert fra andre tjenester i Ansattporten (front_channel_logout).
