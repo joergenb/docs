@@ -37,23 +37,21 @@ participant C as Tjeneste
 participant A as Ansattporten
 
 B->>C: Klikker "login" på tjeneste
-C->>A: /authorize (redirect)
-note over B, A: sluttbruker autentiserer seg
-A->>C: code (redirect)
-C->>A: /token(code)
-A->>C: id_token
+C-->>A: /authorize (redirect)
+note over A: sluttbruker autentiserer seg
+A-->>C: code (redirect)
+C->>+A: /token(code)
+A->>-C: id_token
 note over B,C: innlogget i tjenesten
 
 </div>
 
-Denne flyten er grundig dokumentert på denne siden: 
-
-[innlogging med ID-porten](../../docs/idporten/oidc/oidc_guide_idporten.html).
+Denne flyten er grundig dokumentert på denne siden  [innlogging med ID-porten](../../docs/idporten/oidc/oidc_guide_idporten.html),  men med følgende endringer:
 
 
-
-
-Men du må selvsagt bruke Ansattporten sine endepunkter, som du finner [her]( [ansattporten_metadata.html]).  Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
+* Du finner Ansattporten-spesifikk protokoll-definisjon [ansattporten_protocol.html]
+* Du må selvsagt bruke Ansattporten sine endepunkter, som du finner [her]( [ansattporten_metadata.html]).  
+* Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
 
 
 # Isolert SSO

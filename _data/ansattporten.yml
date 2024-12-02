@@ -38,7 +38,7 @@ folders:
         jurl: /docs/ansattporten/ansattporten_rar.html
 
       - title: Metadata
-        jurl: /docs/idporten/oidc/oidc_func_wellknown.html
+        jurl: /docs/ansattporten/ansattporten_wellknown.html
 
       - title: IP-adresser
         jurl: /docs/general/IP.html

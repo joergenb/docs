@@ -50,7 +50,7 @@ Protokollmessig sier vi at Ansattporten er en egen Oauth2 autorisasjonsserver / 
 
 Som forklart ovenfor, så er ID-porten og Ansattporten isolert fra hverandre som separate OpenID providere. Det er derfor ikke mulig å få single-sign on (SSO) mellom ansatt-tjenester i Ansattporten til innbygger-tjenester i ID-porten.  
 
-Men til forskjell fra ID-porten så tilbyr ikke Ansattporten SSO mellom de ulike tjenestene heller.  Dette er realisert ved at alle klienter får tvangs-satt flagget som aktiverer funksjonaliteten [isolert sso-sesjon](oidc_func_nosso.html).
+Men til forskjell fra ID-porten så tilbyr ikke Ansattporten SSO mellom de ulike tjenestene heller.  Dette er realisert ved at alle klienter får tvangs-satt flagget som aktiverer funksjonaliteten [isolert sso-sesjon](../../docs/idporten/oidc/oidc_func_nosso.html).
 
 ### Autorative kilder for representasjon
 
@@ -89,7 +89,7 @@ Fra 2025 går Ansattporten over i mer ordinær drift.  SLA i form av oppetid vil
 
 Ansattporten tilbyr per nå tre brukerreiser:
 
-* [Innlogging med isolert SSO](ansattporten_guide.html)
+* [Vanlig innlogging (med isolert SSO)](ansattporten_guide.html)
 * [Innlogging på vegne av virksomhet](ansattporten_representasjon.html)
 * [Datadeling på vegne av virksomhet](ansattporten_oauth2.html)
 

@@ -13,16 +13,22 @@ Ansattporten bruker standarden [Rich Authorization Requests (RAR)](https://datat
 
 RAR er en ny Oauth2-utvidelse for transaksjonsspesifikke autorisasjoner. Der “basic” Oauth2 kun gir tilgang til et såkalt “scope” (tekst-streng), åpner RAR for tilgang til mer utvidede datamodeller i form av autorisasjonstyper. Autorisasjonstypen(e) blir utlevert i token som et nytt hierarkisk claim kalla `authorization_details` som igjen er ein array av autorisasjonsobjekter, der hvert objekt består av:
 
-* [Standardiserte felt](https://www.rfc-editor.org/rfc/rfc9396.html#name-common-data-fields):
-    * `type` (påkrevd felt, definerer den aktuelle autorisasjonstypen)
-    * `actions`
-    * `locations` (tiltenkt mottakar, aka =audience for tokenet)
-    * `identifier` (kan peike på ein konkret ressurs hjå APIet)
-    * `privileges`: 
-    * `datatypes` (ein array med datatyper klient ønsker å få frå APIet)
+* Standardisert påkrevd felt:
+    * `type` definerer den aktuelle autorisasjonstypen
 
 * Eigendefinert datamodell
-    * til ein gitt type vil det normalt vere definert og dokumentert ein tilhøyrande gyldig datamodell
+    * til ein gitt `type` vil det vere definert og dokumentert ein tilhøyrande gyldig datamodell.  Ansattporten sine datamodeller er definert på denne siden.  
+
+
+# Forhold mellom RAR og scope
+
+Det er ingen teknisk sammenheng mellom et Oauth2 scope og RAR, de to mekanismene er disjunkte.  
+
+En kan derfor ikke legge til grunn at en klient som ikke har fått et gitt scope, heller ikke kan motta en rar-struktur i token.
+
+# Tilgangstyring av RAR-typer
+
+Det er p.t. ingen tilgangstyring av RAR-typer.  Alle klienter fra alle kunder kan sende inn en RAR-struktur i autorisasjonsforspørselen, og den vil trigge organisasjonsvelger.
 
 
 # RAR-typer støttet i Ansattporten
@@ -31,9 +37,9 @@ Følgende authorization_type er støttet i Ansattporten:
 
 | `authorization_type` | 	 Skildring |
 |-|-|
-| `ansattporten:altinn:service`  | Bruker lenketjenester (ServiceCode) fra Altinn 2 som autorativ kilde for representasjonsforhold |
-| `ansattporten:altinn:resource` | IKKE I BRUK.  Skal støtte bruk av Altinn3-ressurser som autorattiv kilde for representasjon. [Se backlog-sak](https://github.com/orgs/digdir/projects/8/views/38?pane=issue&itemId=75426143&issue=digdir%7Croadmap%7C400) |
-| `ansattporten:entra` | IKKE I BRUK.  Skal støtte bruk av arbeidsgivers pålogging som autorattiv kilde for representasjon. [Se backlog-sak](https://github.com/orgs/digdir/projects/8/views/38?pane=issue&itemId=87373562&issue=digdir%7Croadmap%7C438) |
+| `ansattporten:altinn:service`  |Bruker lenketjenester (ServiceCode) fra Altinn 2 som autorativ kilde for representasjonsforhold |
+| `ansattporten:altinn:resource` |IKKE I BRUK ENNÅ.  Skal støtte bruk av Altinn3-ressurser som autorativ kilde for representasjon. [Se backlog-sak](https://github.com/orgs/digdir/projects/8/views/38?pane=issue&itemId=75426143&issue=digdir%7Croadmap%7C400) |
+| `ansattporten:entra` |IKKE I BRUK ENNÅ.  Skal støtte bruk av arbeidsgivers pålogging som autorativ kilde for representasjon. [Se backlog-sak](https://github.com/orgs/digdir/projects/8/views/38?pane=issue&itemId=87373562&issue=digdir%7Croadmap%7C438) |
 
 
 Det er p.t. ikke mulig å be om ulike RAR-type i samme påloggingsforespørsel. Klienten må istedet implementere flere login-knapper i sin egen løsning.
@@ -51,7 +57,7 @@ Følgende claims kan sendes inn i request:
 | claim | kardinalitet|beskrivelse |
 |-|-|-|
 |resource | påkrevd|Hvilken lenketjeneste i Altinn som etterspørres. Må formatteres slik: `urn:altinn:resource:{tjenestekode}:{tjenesteugave} `|
-|organizationform | Valgfri| Begrense organisasjonsvelger til at sluttbruker bare kan velge hovedenheter (`enterprise`) eller underenheter (`business`).|
+|organizationform | Valgfri| Begrense organisasjonsvelger til at sluttbruker bare kan velge hovedenheter (`enterprise`) eller underenheter (`business`). Default så er begge mulig å velge. |
 |allow_multiple_organizations| Valgfri| Dersom `true` så kan sluttbruker velge flere organisasjoner i organisasjonsvelgeren. Default er false.|
 |allow_deleted_organizations | Valgfri| Dersom `true` så vil organisasjonsvelger vise sletta verksemder. Default er false.|
 
@@ -60,6 +66,15 @@ Følgende claims kan sendes inn i request:
 > **Mange av dagens standard Altinn-roller gir veldig breie tilganger ("Post/arkiv", "Utfyller/innsender").**  Dette er problematisert med at de ikke følger gode dataminimeringsprinsipp, og vanskeliggjør det å skulle holde oversikt over hva en gitt rolle faktisk gir tilgang til.  Derfor tilbyr vi ikke innlogging på vegne av Altinn-roller i Ansattporten, tjenesten må spesifisere en lenketjeneste. 
 
 
+*Eksempel på request*: 
+```
+  authorization_details= [
+    {
+      "type": "ansattporten:altinn:service",
+      "resource": "urn:altinn:resource:2480:40"
+    }
+```
+
 Datamodellen for respons inneholder de samme claimene som i request, men i tillegg vil det utleveres:
 
 | claim | beskrivelse |
@@ -67,6 +82,21 @@ Datamodellen for respons inneholder de samme claimene som i request, men i tille
 | reportees | Array med valgte virksomheter. |
 | Rights | For hver virksomhet, et array med rettigheter som innlogget bruker har for aktuell tjenestekode.  |
 | Name | For hver virksomhet, navnet på valgt virksomhet|
+
+*Eksempel på respons*:
+```
+  "authorization_details" : [ {
+    "resource" : "urn:altinn:resource:2480:40",
+    "type" : "ansattporten:altinn:service",
+    "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
+    "reportees" : [ {
+      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
+      "Authority" : "iso6523-actorid-upis",
+      "ID" : "0192:987464291",
+      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
+    } ]
+  } ]
+```
 
 Dersom det er forespurt flere representasjonsforhold, så vil `authorization_details` inneholde ett json-objekt per lenketjeneste som brukeren har rettighet til. 
 
@@ -87,3 +117,4 @@ TBD
 # Datamodell for Entra ID  (`ansattporten:entra`)
 
 TBD
+
