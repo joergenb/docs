@@ -49,7 +49,7 @@ note over B,C: innlogget i tjenesten
 Denne flyten er grundig dokumentert på denne siden  [innlogging med ID-porten](../../docs/idporten/oidc/oidc_guide_idporten.html),  men med følgende endringer:
 
 
-* Du finner Ansattporten-spesifikk protokoll-definisjon [ansattporten_protocol.html]
+* Du finner Ansattporten-spesifikk protokoll-definisjon [her](ansattporten_protocol.html).
 * Du må selvsagt bruke Ansattporten sine endepunkter, som du finner [her]( [ansattporten_metadata.html]).  
 * Klienten du bruker, må være registrert i Selvbetjening til å bruke Ansattporten og ikke ID-porten.
 
