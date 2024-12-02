@@ -11,7 +11,7 @@ folders:
 - title: Bruksområder
   folderitems:
 
-      - title: Innlogging i Ansattporten
+      - title: Vanlig innlogging 
         jurl: /docs/ansattporten/ansattporten_guide.html
 
       - title: Innlogging på vegne av virksomhet
@@ -19,7 +19,6 @@ folders:
 
       - title: Datadeling på vegne av virksomhet
         jurl: /docs/ansattporten/ansattporten_datadeling.html
-
 
       - title: Ansattporten - skyinnlogging
         jurl: /docs/ansattporten/ansattporten_allmennsky.html
@@ -31,9 +30,6 @@ folders:
       - title: "Generelt om protokollen"
         jurl: /docs/ansattporten/ansattporten_protocol.html
 
-      - title: "/authorize"
-        jurl: /docs/ansattporten/ansattporten_protocol_authorize.html
-
       - title: "RAR og autorative kilder"
         jurl: /docs/ansattporten/ansattporten_rar.html
 
@@ -42,12 +38,6 @@ folders:
 
       - title: IP-adresser
         jurl: /docs/general/IP.html
-
-- title: Testing
-  folderitems:
-
-  - title: Testbrukere
-    jurl: /docs/ansattporten/ansattporten_testbrukere.html
 
 - title: Administrasjon
   folderitems:
@@ -71,5 +61,3 @@ related_resources_list:
 - title: Status og driftsmeldinger
   jurl: https://status.digdir.no/
 
-- title: Digitaliseringsdirektoratet
-  jurl: https://www.digdir.no
