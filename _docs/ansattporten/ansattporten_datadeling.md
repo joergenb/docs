@@ -44,7 +44,7 @@ participant S as Autorativ kilde
 participant T as API
 
 B->>C: Klikker "login" på tjeneste
-C-->>A: /authorize med representasjonstype (redirect)
+C-->>A: /authorize med <br/>representasjonstype (redirect)
 note over A: sluttbruker autentiserer seg
 A->>+S: Har sluttbruker <br/>denne representasjonstypen ?
 S->>-A: Liste med virksomheter
