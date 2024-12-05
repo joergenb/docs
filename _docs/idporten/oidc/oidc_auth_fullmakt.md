@@ -101,7 +101,7 @@ https://login.test.idporten.no/authorize?
   authorization_details= [
     {
       "type": "idporten:fullmakt",
-      "permission_roles": [ "skatt"] 
+      "permission_roles": [ "arbeid"] 
     }
   ]
 ```
@@ -168,6 +168,8 @@ Klienten finner opplysninger om valgt fullmaktsforhold i claimet `authorization_
 }
 ```
 
+
+Dersom brukeren velger å representere seg sjølv, vil `authorization_details` inneholde en tom array: `[]`.
 
 
 

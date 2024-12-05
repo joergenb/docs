@@ -43,16 +43,16 @@ Følgende authorization_type er støttet i ID-porten:
 
 
 
-# Datamodell for  fullmaktsgrupper (`idporten:fullmakt`)
+# Datamodell for  fullmakt (`idporten:fullmakt`)
 
 Følgende claims kan sendes inn i request: 
 
 | claim | kardinalitet|beskrivelse |
 |-|-|-|
-|persmission_roles | påkrevd| Et array av hvilke fullmaktsgrupper som etterspørres. |
+|permission_roles | påkrevd| Et array av hvilke fullmaktsgrupper som etterspørres. |
 
 
-Du finner en oversikt over tilgjengelige typer [hos Statens Sivilrettsforvaltning](https://www.vergemal.no/fullmaktstekst).  Selve det detaljerte kodeverket vi bruker er basert på verdiene som [Skatteetaten har definert i sin informasjonsmodell](https://skatteetaten.github.io/folkeregisteret-api-dokumentasjon/informasjonsmodell/) (les avsnitt 5.20 i PDFen side 79).
+Du finner en oversikt over tilgjengelige typer [hos Statens Sivilrettsforvaltning](https://www.vergemal.no/fullmaktstekst).  Selve det detaljerte kodeverket vi bruker er foreløpig basert på verdiene som [Skatteetaten har definert i sin informasjonsmodell](https://skatteetaten.github.io/folkeregisteret-api-dokumentasjon/informasjonsmodell/) (les avsnitt 5.20 i PDFen side 79).  På sikt vil disse erstattes av definisjonene for [fullmaktsgrupper for innbygger i Altinn 3](https://docs.altinn.studio/authorization/what-do-you-get/accessgroups/type-accessgroups/tilgangsgrupper-innbyggere/).
 
 
 
@@ -61,7 +61,7 @@ Du finner en oversikt over tilgjengelige typer [hos Statens Sivilrettsforvaltnin
   authorization_details= [
     {
       "type": "idporten:fullmakt",
-      "permission_roles": [ "skatt"] 
+      "permission_roles": [ "arbeid"] 
     }
   ]
 ```
