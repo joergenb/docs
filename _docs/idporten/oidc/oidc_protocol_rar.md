@@ -31,7 +31,7 @@ En kan derfor ikke legge til grunn at en klient som ikke har fått et gitt scope
 Det er p.t. ingen tilgangstyring av RAR-typer.  Alle klienter fra alle kunder kan sende inn en RAR-struktur i autorisasjonsforspørselen, og den vil trigge fullmaktsvelger.
 
 
-# RAR-typer støttet i Ansattporten
+# RAR-typer støttet i ID-porten
 
 Følgende authorization_type er støttet i ID-porten:
 

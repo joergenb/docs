@@ -18,7 +18,7 @@ Det er et stort, udekket behov for at andre kan representere en innbygger ved br
 
 Basert på denne bakgrunn ønsker Digdir å teste ut hvordan ID-porten kan understøtte en nasjonal fullmaktsløsning, ved å la fullmektige kunne logge inn på vegne av sine fullmaktsgivere til offentlige tjenester.
 
-Erfaring med piloten skal blant annet inngå som kunnskapsgrunnlag i [utredning på fullmaktsområdet i eID-strategien](tiltak_6_regjeringen_vil_utrede_hvordan_lsning_for_sikre_og_brukervennlige_digitale_fullmaktslsninger_som_muliggjr_tilgang_til_offentlige_tjenester_p_vegne_av_en_annen_bruker_kan_realiseres).
+Erfaring med piloten skal blant annet inngå som kunnskapsgrunnlag i [utredning på fullmaktsområdet i eID-strategien](https://www.digdir.no/digital-identitet/mal-1-alle-relevante-brukergrupper-skal-enkelt-kunne-skaffe-seg-en-eid-pa-det-sikkerhetsnivaet-de/5514#tiltak_6_regjeringen_vil_utrede_hvordan_lsning_for_sikre_og_brukervennlige_digitale_fullmaktslsninger_som_muliggjr_tilgang_til_offentlige_tjenester_p_vegne_av_en_annen_bruker_kan_realiseres).
 
 # Brukerreise
 
@@ -85,13 +85,13 @@ note over B,C: innlogget på vegne av valgt fullmaktsgiver
 </div>
 
 
-Den første delen av flyten er altså en helt normal innlogging i ID-porten.  Dette er dokumentert [her](oidc_auht_codeflow.html)
+Den første delen av flyten er altså en helt normal innlogging i ID-porten.  Dette er dokumentert [her](oidc_auth_codeflow.html)
 
-Den andre delen av flyten, dvs. selve fullmaktspålogginga, er realisert ved bruk av Oauth2-utvidelsen [Rich Authorization Requests (RAR)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar), og er dokumentert nedenfor i 3 steg:
+Den andre delen av flyten, dvs. selve fullmaktspålogginga, er realisert ved bruk av Oauth2-utvidelsen [Rich Authorization Requests (RAR)](https://datatracker.ietf.org/doc/rfc9396/), og er dokumentert nedenfor i 3 steg:
 
 ### Steg 1: påloggingsforespørsel
 
-Klienten må inkludere claimet `authorization_details` i autorisasjonsforespøreselen for å trigge fullmaktspålogging.  Et eksempel er vist her:
+Klienten må inkludere claimet `authorization_details` i autorisasjonsforespøreselen for å trigge fullmaktspålogging.  Et forenklet eksempel er vist her:
 
 ```
 https://login.test.idporten.no/authorize?
@@ -105,20 +105,18 @@ https://login.test.idporten.no/authorize?
     }
   ]
 ```
-(merk at eksempelet er forenklet)
 
-`authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` forteller hvilken type representasjon som tjenesten ønsker å benytte. Ulike `type` vil ha egne datamodeller for hvilke andre claims som inngår i request og respons.  Datamodellene er beskrevet [her](oidc_protocol_rar.html).
+`authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` satt til `idporten:fullmakt` forteller ID-porten at det kreves gjennomført en fullmaktspålogging.  Datamodellen er nærmere beskrevet [her](oidc_protocol_rar.html).
 
 
 Claimet `permission_roles` er lista over de mulige fullmaktstypene som tjenesten støtter.  Innlogget bruker må ha en eller flere av disse for å få lov til å velge en fullmaktsgiver i fullmaktsvelgeren.  Det er altså logisk OR mellom elementene i lista. 
 
-Du finner en oversikt over tilgjengelige typer [hos Statens Sivilrettsforvaltning](https://www.vergemal.no/fullmaktstekst).  Selve det detaljerte kodeverket vi bruker er basert på verdiene som [Skatteetaten har definert i sin informasjonsmodell](https://skatteetaten.github.io/folkeregisteret-api-dokumentasjon/informasjonsmodell/) (les avsnitt 5.20 i PDFen side 79).
-
+Du finner en oversikt over tilgjengelige fullmaktstyper [hos Statens Sivilrettsforvaltning](https://www.vergemal.no/fullmaktstekst).  
 
 
 ### Steg 2: fullmaktsvelger
 
-I normale tilfeller så har brukeren allerede en aktiv SSO-sesjon i ID-porten som følge av den første pålogginga som seg selv.  Derfor vil bruken nå slippe å autentisere seg en gang til og hoppe direkte til fullmaktsvelgeren.  Her må brukeren velge hvem en vil representere. 
+I normale tilfeller så har brukeren allerede en aktiv SSO-sesjon i ID-porten som følge av den første pålogginga som seg selv.  Derfor vil bruken nå slippe å autentisere seg en gang til og heller hoppe direkte til fullmaktsvelgeren.  Her må brukeren velge hvem en vil representere. 
 
 ID-porten vil kontrollere, ved kall mot autorativ kilde, at fullmaktsforholdet eksisterer og er gjeldende, slik at innlogget bruker ikke får valgt eller injisert ikke-eksisterende fullmaktsforhold.
 
@@ -131,9 +129,9 @@ Når bruker har gjort sitt valgt, vil browser bli redirecta tilbake til tjeneste
 
 ### Steg 3: hente fullmaktstoken
 
-Når brukeren blir redirecta tilbakt til klient, [henter klienten tokens på vanlig måte](../../docs/idporten/oidc/oidc_protocol_token.html), og bruker dette til å oppdatere / endre eksisterende lokale brukersesjon i egen tjeneste.
+Når brukeren blir redirecta tilbakt til klient, [henter klienten tokens på vanlig måte](../../idporten/oidc/oidc_protocol_token.html), og bruker responsen til å oppdatere / endre eksisterende lokale brukersesjon i egen tjeneste.
 
-Klienten finner opplysninger om valgt representasjonsforhold i claimet `authorization_details` som er del av token-responsen direkte.
+Klienten finner opplysninger om valgt fullmaktsforhold i claimet `authorization_details` som er del av token-responsen direkte.
 
 
 *Eksempel på token-response:*
@@ -151,19 +149,18 @@ Klienten finner opplysninger om valgt representasjonsforhold i claimet `authoriz
 
   "authorization_details" : [ {
     "type" : "idporten:fullmakt",
-
     "authorizer" : {
       "name" : "USIKKER BILLETTLUKE",
       "pid" : "28816196088"
     },
-    "permissions" : [ {
-      "owner" : "nav",
-      "role" : "arbeid"
-    } ],
     "authorized_representative" : {
       "name" : "LIVSGLAD DEDIKERT HUSBÅT BILLETTLUKE",
       "pid" : "05895894984"
-    }
+    },
+    "permissions" : [ {
+      "owner" : "nav",
+      "role" : "arbeid"
+    } ]
   } ],
 
   "refresh_token" : "eyJlbmMiO...",
@@ -174,10 +171,10 @@ Klienten finner opplysninger om valgt representasjonsforhold i claimet `authoriz
 
 
 
-Vi har valgt å OGSÅ inkludere representasjonsinformasjonen i id_tokenet, ved å la `authorization_details`-claimet være inkludert også her.  Men merk følgende:
+Vi har valgt å OGSÅ inkludere fullmaktsinformasjonen i id_tokenet, ved å la `authorization_details`-claimet være inkludert også her.  Men merk følgende:
 
 * Den "vanlige" delen av id_tokenet vil inneholde fødselsnummer på innlogga bruker (altså er `pid` og `sub` uendret mellom vanlig id_token og fullmaktsid_token).
-* Bruken av `authorization_details` inne i et id_token ikke er beskrevet i RAR-spesifikasjonen, da RAR er en oauth2-mekanisme og ikke en OIDC-mekanisme. Klienten skal fortrinnsvis bruke token-responsen som vist ovenfor til å utlede hvilke rettigheter sluttbruker gav til klienten.  Vi har dog valgt å inkludere det i id_token fordi vi tror det for noen kunder er lettere å hente informasjonen derifra, og det kanskje også er enklere konseptuelt å ha to typer token som kan bruke til å skille på hvilken kontekst. 
+* Bruken av `authorization_details` inne i et id_token ikke er beskrevet i RAR-spesifikasjonen, da RAR er en oauth2-mekanisme og ikke en OIDC-mekanisme. Klienten skal fortrinnsvis bruke token-responsen direkte (som vist ovenfor) til å utlede hvilke rettigheter sluttbruker gav til klienten.  Vi har dog valgt å inkludere fullmaktsinformasjonen også i id_token fordi vi tror det for noen kunder er lettere å hente informasjonen derifra, og det kanskje også er enklere konseptuelt å forholde seg til to ulike typer token for å skille på hvilken kontekst pålogginga gjelder, kontra å hente noe i respons, og noe annet i token.
 
 
 *Eksempel på fullmakts-id_token*: 
@@ -185,22 +182,26 @@ Vi har valgt å OGSÅ inkludere representasjonsinformasjonen i id_tokenet, ved �
 {
   "sub" : "z9RuQiLefXmJOBnywa_c75YQMH05nDsHjw0RFzuJC8M",
   "amr" : [ "TestID" ],
-  "iss" : "https://test.ansattporten.no",
-  "pid" : "45840375084",
+  "iss" : "https://test.idporten.no",
+  "pid" : "05895894984",
 ...
-  "authorization_details" : [ {
-    "resource" : "urn:altinn:resource:2480:40",
-    "type" : "ansattporten:altinn:service",
-    "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
-    "reportees" : [ {
-      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
-      "Authority" : "iso6523-actorid-upis",
-      "ID" : "0192:987464291",
-      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
+   authorization_details" : [ {
+    "type" : "idporten:fullmakt",
+    "authorizer" : {
+      "name" : "USIKKER BILLETTLUKE",
+      "pid" : "28816196088"
+    },
+    "authorized_representative" : {
+      "name" : "LIVSGLAD DEDIKERT HUSBÅT BILLETTLUKE",
+      "pid" : "05895894984"
+    },
+    "permissions" : [ {
+      "owner" : "nav",
+      "role" : "arbeid"
     } ]
-  } ]
-}
+  } ],
 
+}
 ```
 
 
@@ -210,7 +211,7 @@ Vi har valgt å OGSÅ inkludere representasjonsinformasjonen i id_tokenet, ved �
 
 Det betyr at funksjonaliteten med fullmaktspålogging også kan brukes for å tilby et API som krever at innlogget bruker hos konsumenten er fullmektig.  APIet må bare validere at klientene hos konsumentene sender access_token med RAR, og validere at RAR-elementet inneholer påkrevd fullmaktstype.
 
-Merk at det ikke er noen tilgangstyring av RAR-typer.  Alle klienter hos alle kunder kan forespørre RAR og få informasjonen i access_token dersom sluttbruker velger dette.  API-tilbyder må derfor bruker scopes til å implementere tilgangstyring. 
+Merk at det ikke er noen tilgangstyring av RAR-typer.  Alle klienter hos alle kunder kan forespørre RAR og få informasjonen i access_token dersom sluttbruker velger dette.  API-tilbyder må derfor bruke scopes dersom de trenger  implementere tilgangstyring. 
 
 # Om scopes, rar og sesjoner
 

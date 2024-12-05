@@ -61,6 +61,8 @@ folders:
         jurl: /docs/idporten/oidc/oidc_protocol_jwtgrant.html
       - title: "API scopes"
         jurl: /docs/idporten/oidc/oidc_protocol_scope.html
+      - title: "RAR"
+        jurl: /docs/idporten/oidc/oidc_protocol_rar.html
       - title: Systemarkitektur
         jurl: /docs/idporten/oidc/oidc_arch.html
 
