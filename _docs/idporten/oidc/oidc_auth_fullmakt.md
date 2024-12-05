@@ -106,7 +106,7 @@ https://login.test.idporten.no/authorize?
   ]
 ```
 
-`authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` satt til `idporten:fullmakt` forteller ID-porten at det kreves gjennomført en fullmaktspålogging.  Datamodellen er nærmere beskrevet [her](oidc_protocol_rar.html).
+`authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` satt til `idporten:fullmakt` forteller ID-porten at det kreves gjennomført en fullmaktspålogging.  [Datamodellen er nærmere beskrevet her](oidc_protocol_rar.html).
 
 
 Claimet `permission_roles` er lista over de mulige fullmaktstypene som tjenesten støtter.  Innlogget bruker må ha en eller flere av disse for å få lov til å velge en fullmaktsgiver i fullmaktsvelgeren.  Det er altså logisk OR mellom elementene i lista. 
