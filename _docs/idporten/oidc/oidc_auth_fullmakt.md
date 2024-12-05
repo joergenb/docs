@@ -9,7 +9,7 @@ redirect_from: /oidc_auth_fullmakt
 
 
 
-{% include note.html content="Innlogging på vegne av andre er beta-funksjonalitet .  Vi ønsker virksomheter velkommen til å hjelpe oss med å teste og forbedre funksjonaliteten gjennom en pilotfase i 2025. De som deltar, må være forberedt på at det kan bli løpende endringer i funksjonalitet og tekniske grensesnitt. %}
+{% include note.html content="Innlogging på vegne av andre er beta-funksjonalitet .  Vi ønsker virksomheter velkommen til å hjelpe oss med å teste og forbedre funksjonaliteten gjennom en pilotfase i 2025. De som deltar, må være forberedt på at det kan bli løpende endringer i funksjonalitet og tekniske grensesnitt." %}
 
 
 # Bakgrunn
