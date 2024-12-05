@@ -33,14 +33,12 @@ folders:
         jurl: /docs/idporten/oidc/oidc_auth_oauth2.html
 
       - title: Fullmaktspålogging
-        jurl: /docs/idporten/oidc/oidc_func_fullmakt.html
+        jurl: /docs/idporten/oidc/oidc_auth_fullmakt.html
 
 
 - title: Grensesnittsdefinisjon
   folderitems:
 
-      - title: "Endringer i 2023"
-        jurl: /docs/idporten/oidc/oidc_protocol_nye_idporten.html
       - title: "/authorize"
         jurl: /docs/idporten/oidc/oidc_protocol_authorize.html
       - title: "/par"
