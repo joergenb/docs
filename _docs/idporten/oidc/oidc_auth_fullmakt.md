@@ -14,12 +14,11 @@ redirect_from: /oidc_auth_fullmakt
 
 # Bakgrunn
 
-Det er et stort udekka behov
+Det er et stort, udekket behov for at andre kan representere en innbygger ved bruk av digital tjenester.  Tiltak knyttet til etablering av nasjonale løsninger på fullmaktsområdet er forankret i både Digitaliseringsstrategien og Nasjonal eID-strategi. 
 
-Basert på denne bakgrunn ønsker Digdir å teste hvordan ID-porten kan understøtte en nasjonal fullmaktsløsning.
+Basert på denne bakgrunn ønsker Digdir å teste ut hvordan ID-porten kan understøtte en nasjonal fullmaktsløsning, ved å la fullmektige kunne logge inn på vegne av sine fullmaktsgivere til offentlige tjenester.
 
-I første rekke er det
-
+Erfaring med piloten skal blant annet inngå som kunnskapsgrunnlag i [utredning på fullmaktsområdet i eID-strategien](tiltak_6_regjeringen_vil_utrede_hvordan_lsning_for_sikre_og_brukervennlige_digitale_fullmaktslsninger_som_muliggjr_tilgang_til_offentlige_tjenester_p_vegne_av_en_annen_bruker_kan_realiseres).
 
 # Brukerreise
 
