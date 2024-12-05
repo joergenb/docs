@@ -134,7 +134,7 @@ Når bruker har gjort sitt valgt, vil browser bli redirecta tilbake til tjeneste
 
 Når brukeren blir redirecta tilbakt til klient, [henter klienten tokens på vanlig måte](../../docs/idporten/oidc/oidc_protocol_token.html), og bruker dette til å oppdatere / endre eksisterende lokale brukersesjon i egen tjeneste.
 
-Klienten finner opplysninger om valgt representasjonsforhold i claimet `authorization_details`. Claimet er både returnert direkte som del av selve token-responsen, men er også inkludert i selve id_tokenet, for fleksibiltet.
+Klienten finner opplysninger om valgt representasjonsforhold i claimet `authorization_details` som er del av token-responsen direkte.
 
 
 *Eksempel på token-response:*
@@ -151,15 +151,20 @@ Klienten finner opplysninger om valgt representasjonsforhold i claimet `authoriz
   "scope" : "openid profile",
 
   "authorization_details" : [ {
-    "resource" : "idportenurn:altinn:resource:2480:40",
-    "type" : "ansattporten:altinn:service",
-    "resource_name" : "Produkter og tjenester fra Brønnøysundregistrene",
-    "reportees" : [ {
-      "Rights" : [ "Read", "ArchiveDelete", "ArchiveRead" ],
-      "Authority" : "iso6523-actorid-upis",
-      "ID" : "0192:987464291",
-      "Name" : "DIGITALISERINGSDIREKTORATET AVD LEIKANGER"
-    } ]
+    "type" : "idporten:fullmakt",
+
+    "authorizer" : {
+      "name" : "USIKKER BILLETTLUKE",
+      "pid" : "28816196088"
+    },
+    "permissions" : [ {
+      "owner" : "nav",
+      "role" : "arbeid"
+    } ],
+    "authorized_representative" : {
+      "name" : "LIVSGLAD DEDIKERT HUSBÅT BILLETTLUKE",
+      "pid" : "05895894984"
+    }
   } ],
 
   "refresh_token" : "eyJlbmMiO...",
@@ -167,7 +172,16 @@ Klienten finner opplysninger om valgt representasjonsforhold i claimet `authoriz
 }
 ```
 
-*Eksempel på id_token med representasjons-informasjon: *
+
+
+
+Vi har valgt å OGSÅ inkludere representasjonsinformasjonen i id_tokenet, ved å la `authorization_details`-claimet være inkludert også her.  Men merk følgende:
+
+* Den "vanlige" delen av id_tokenet vil inneholde fødselsnummer på innlogga bruker (altså er `pid` og `sub` uendret mellom vanlig id_token og fullmaktsid_token).
+* Bruken av `authorization_details` inne i et id_token ikke er beskrevet i RAR-spesifikasjonen, da RAR er en oauth2-mekanisme og ikke en OIDC-mekanisme. Klienten skal fortrinnsvis bruke token-responsen som vist ovenfor til å utlede hvilke rettigheter sluttbruker gav til klienten.  Vi har dog valgt å inkludere det i id_token fordi vi tror det for noen kunder er lettere å hente informasjonen derifra, og det kanskje også er enklere konseptuelt å ha to typer token som kan bruke til å skille på hvilken kontekst. 
+
+
+*Eksempel på fullmakts-id_token*: 
 ```
 {
   "sub" : "z9RuQiLefXmJOBnywa_c75YQMH05nDsHjw0RFzuJC8M",
@@ -190,15 +204,19 @@ Klienten finner opplysninger om valgt representasjonsforhold i claimet `authoriz
 
 ```
 
-Merk at bruken av `authorization_details` inne i et id_token ikke er beskrevet i RAR-spesifikasjonen. Klienten skal fortrinnsvis bruke token-responsen til å utlede hvilke rettigheter sluttbruker gav til klienten. Vi har valgt å inkludere det i id_token fordi vi tror det kanskjer er litt lettere for kundene våre.  Det er også enklere å forklare at "fullmaktsinformasjon finner du i authorization_details-feltet, og det finner du i id_token dersom du lager en tjeneste eller du finner det i access_token dersom du tilbyr et api"
 
+# Datadeling som fullmektig
 
+`authorization_details`-claimet vil også bli inkludert i ID-porten sine access_tokens.  
+
+Det betyr at funksjonaliteten med fullmaktspålogging også kan brukes for å tilby et API som krever at innlogget bruker hos konsumenten er fullmektig.  APIet må bare validere at klientene hos konsumentene sender access_token med RAR, og validere at RAR-elementet inneholer påkrevd fullmaktstype.
+
+Merk at det ikke er noen tilgangstyring av RAR-typer.  Alle klienter hos alle kunder kan forespørre RAR og få informasjonen i access_token dersom sluttbruker velger dette.  API-tilbyder må derfor bruker scopes til å implementere tilgangstyring. 
 
 # Om scopes, rar og sesjoner
 
 Den sentrale SSO-sesjonen i ID-porten er upåvirket av fullmaktspålogging.  RAR-elementet som blir lagt ved fullmaktspålogginga gjelder kun for denne ene autorisasjonsforespørselen.  Sentral SSO-sesjon blir altså ikke endret til å være en "på-vegne-av-sesjon".  Dersom innlogget bruker forsøker å sende en ny fullmaktspålogging, enten det er til en ny tjeneste, eller til samme tjeneste, vil hen bli vist fullmaktsvelger på ny.
 
-Videre så er det ingen sammenheng eller teknisk avhengighet mellom [scopes i brukerstyrt datadeling](oidc_auth_oauth2.html) og RAR.   
+Videre så er det ingen sammenheng eller teknisk avhengighet mellom [scopes i brukerstyrt datadeling](oidc_auth_oauth2.html) og RAR - de to mekanismene er disjunkte. En API-tilbyder må derfor validere at access_tokens både inneholder scopene som evt. kreves OG har de nødvendige RAR-typene. 
 
-
- Teknisk er fullmaktspålogginga (RAR-elementene) bare en beriket innlogging, og ihht oauth2-standardene er mekanismene for scopes og RAR valgfri "tilleggsinformasjon".
+Protokollmessig så er mekanismene for scopes og RAR valgfri "tilleggsinformasjon" - klienten ber om noen scopes og/eller noen rar-elementer, men så er det opp til sluttbrukeren om hen ønsker å gi kliente alt som ble forspurt eller bare noe av det.
