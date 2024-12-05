@@ -32,14 +32,8 @@ folders:
       - title: Brukerstyrt datadeling
         jurl: /docs/idporten/oidc/oidc_auth_oauth2.html
 
-      - title: Ansattporten
-        jurl: /docs/idporten/oidc/ansattporten_guide.html
-
-      - title: Ansattporten - skyinnlogging
-        jurl: /docs/idporten/oidc/ansattporten_allmennsky.html
-
-      - title: ID-porten utland
-        jurl: /docs/idporten/oidc/oidc_func_idporten-utland.html
+      - title: Fullmaktspålogging
+        jurl: /docs/idporten/oidc/oidc_func_fullmakt.html
 
 
 - title: Grensesnittsdefinisjon
