@@ -41,7 +41,7 @@ ID-porten har bevisst valgt å *ikke* realisere fullmaktspålogging ved imperson
 
 Innlogget bruker kan ikke velge fritt, men må velge et eksisterende fullmaktsforhold.  Dette fullmaktsforholdet må være registrert i en ekstern, autorativ kilde.
 
-I pilotperioden 2025 så er det Vergemålsregisteret til Statens Sivilrettsforvaltning som er den tilgjengelige autorative kilden.  
+I pilotperioden 2025 så er det Vergemålsregisteret til Statens Sivilrettsforvaltning, distribuert via Folkeregisteret, som er den tilgjengelige autorative kilden.  Så snart brukerstyrte fullmakter for innbygger blir tilgjengelig i Altinn 3, så vil disse inkluderes i løsningen.
 
 ID-porten har ikke - og vil aldri få - en egen database over fullmakter.  Dette betyr at administrasjon av fullmakter (å gi, endre, eller trekke tilbake en fullmakt) skal og må skje i hos den autorative kilden.
 
@@ -64,7 +64,7 @@ sequenceDiagram
 participant B as Bruker
 participant C as Tjeneste
 participant A as ID-porten
-participant S as Najonal Fullmaktsløsning
+participant S as Nasjonal Fullmaktsløsning
 
 B->>C: Klikker "login" på tjeneste
 C-->>A: /authorize (redirect)
@@ -110,6 +110,10 @@ https://login.test.idporten.no/authorize?
 
 `authorization_details`-arrayet inneholdet et JSON-objekt der claimet `type` forteller hvilken type representasjon som tjenesten ønsker å benytte. Ulike `type` vil ha egne datamodeller for hvilke andre claims som inngår i request og respons.  Datamodellene er beskrevet [her](oidc_protocol_rar.html).
 
+
+Claimet `permission_roles` er lista over de mulige fullmaktstypene som tjenesten støtter.  Innlogget bruker må ha en eller flere av disse for å få lov til å velge en fullmaktsgiver i fullmaktsvelgeren.  Det er altså logisk OR mellom elementene i lista. 
+
+Du finner en oversikt over tilgjengelige typer [hos Statens Sivilrettsforvaltning](https://www.vergemal.no/fullmaktstekst).  Selve det detaljerte kodeverket vi bruker er basert på verdiene som [Skatteetaten har definert i sin informasjonsmodell](https://skatteetaten.github.io/folkeregisteret-api-dokumentasjon/informasjonsmodell/) (les avsnitt 5.20 i PDFen side 79).
 
 
 
