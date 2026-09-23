@@ -31,7 +31,7 @@ openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22http
 
 ## How to get a Norwegain PID ?
 
-Step 1: open the offer on your wallet
+Step 1: open the offer above on your wallet.  A QR-code with the offer can be found here: `https://bevisporten.test.eidas2sandkasse.net/start-issuance?credential_configuration_id=no.digdir.eudiw.webuild.pid_sd_jwt_vc`
 
 Step 2: an end-user authentication session is started in the browser. 
 
